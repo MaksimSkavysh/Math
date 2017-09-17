@@ -1,5 +1,8 @@
 .idea
-
+**/.idea/
+/**/.idea/
+.DS_Store
+**/.DsStore
 # Distribution / packaging
 .Python
 env/
