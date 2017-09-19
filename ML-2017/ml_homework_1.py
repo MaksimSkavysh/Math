@@ -26,6 +26,12 @@ class Rect:
         if self.y2 < y:
             self.y2 = y
 
+    def reset_bounds(self, x1=0.0, y1=0.0, x2=0.0, y2=0.0):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+
     def plot(self, color='b'):
         plt.plot((self.x1, self.x2, self.x2, self.x1, self.x1), (self.y1, self.y1, self.y2, self.y2, self.y1),
                  color=color)
@@ -46,7 +52,7 @@ def create_marks(S, square: Rect):
 def calculate_true_risk(hypotesa: Rect, true_rect: Rect):
     return 1 - hypotesa.square / true_rect.square
 
-m = 100
+M = 2000
 main_rect = Rect(0, 0, 1, 1)
 main_rect.calculate_square()
 
@@ -54,17 +60,29 @@ q_side = 0.5 ** 0.5
 q_rect = Rect(0, 0, q_side, q_side)
 q_rect.square = 0.5
 
-S = np.random.uniform(0, 1, (m, 2))
-Y = create_marks(S, q_rect)
+h_rect = Rect()
+risk_list = [1.0]*M
+indexes_list = list(range(1, M + 1, 1))
 
-h_rect = Rect(1, 1, 0, 0)
-for i in range(0, len(S), 1):
-    if Y[i] == 1:
-        h_rect.update_bounds(S[i])
-h_rect.calculate_square()
+for m in range(1, M + 1, 1):
+    steps = 0
+    true_risk = 0
+    while steps < 2:
+        S = np.random.uniform(0, 1, (m, 2))
+        Y = create_marks(S, q_rect)
+        h_rect.reset_bounds(1, 1, 0, 0)
+        for i in range(0, len(S), 1):
+            if Y[i] == 1:
+                h_rect.update_bounds(S[i])
+        h_rect.calculate_square()
+        true_risk = true_risk + calculate_true_risk(h_rect, q_rect)
+        steps += 1
+    risk_list[m-1] = true_risk/10.0
+    print(m)
 
-print(calculate_true_risk(h_rect, q_rect))
+plt.scatter(indexes_list, risk_list, s=0.1, facecolors='b', edgecolors='b')
 
+plt.show()
 
 # main_rect.plot('black')
 # q_rect.plot('black')
