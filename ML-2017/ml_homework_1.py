@@ -36,17 +36,17 @@ class Rect:
 
 
 def create_marks(S, square: Rect):
-    marks = []
+    marks = [0.0]*len(S)
     for i in range(0, len(S), 1):
         mark = 1 if square.check_dot(S[i]) else 0
-        marks.append(mark)
+        marks[i] = mark
     return marks
 
 
 def calculate_true_risk(hypotesa: Rect, true_rect: Rect):
     return 1 - hypotesa.square / true_rect.square
 
-m = 1000
+m = 100
 main_rect = Rect(0, 0, 1, 1)
 main_rect.calculate_square()
 
@@ -64,6 +64,7 @@ for i in range(0, len(S), 1):
 h_rect.calculate_square()
 
 print(calculate_true_risk(h_rect, q_rect))
+
 
 # main_rect.plot('black')
 # q_rect.plot('black')
