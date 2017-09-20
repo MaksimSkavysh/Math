@@ -37,6 +37,8 @@ class Rect:
                  color=color)
 
     def calculate_square(self):
+        if self.x2 <= self.x1 or self.y2 <= self.y1:
+            return 0
         self.square = (self.x2 - self.x1) * (self.y2 - self.y1)
         return self.square
 
@@ -52,7 +54,7 @@ def create_marks(S, square: Rect):
 def calculate_true_risk(hypotesa: Rect, true_rect: Rect):
     return 1 - hypotesa.square / true_rect.square
 
-M = 2000
+M = 10000
 main_rect = Rect(0, 0, 1, 1)
 main_rect.calculate_square()
 
@@ -64,10 +66,17 @@ h_rect = Rect()
 risk_list = [1.0]*M
 indexes_list = list(range(1, M + 1, 1))
 
+threshold1 = 0.1
+threshold2 = 0.01
+threshold3 = 0.001
+
+stepsNumber = 5
+
 for m in range(1, M + 1, 1):
     steps = 0
     true_risk = 0
-    while steps < 2:
+
+    while steps < stepsNumber:
         S = np.random.uniform(0, 1, (m, 2))
         Y = create_marks(S, q_rect)
         h_rect.reset_bounds(1, 1, 0, 0)
@@ -77,17 +86,22 @@ for m in range(1, M + 1, 1):
         h_rect.calculate_square()
         true_risk = true_risk + calculate_true_risk(h_rect, q_rect)
         steps += 1
-    risk_list[m-1] = true_risk/10.0
-    print(m)
+    true_risk = true_risk/stepsNumber
 
-plt.scatter(indexes_list, risk_list, s=0.1, facecolors='b', edgecolors='b')
+    if true_risk <= threshold3:
+        print('0.1%: ', m)
+        threshold3 = -1
+        M = m
+        break
+    elif true_risk <= threshold2:
+        print('1%: ', m)
+        threshold2 = -1
+    elif true_risk <= threshold1:
+        print('10%: ', m)
+        threshold1 = -1
+    risk_list[m-1] = true_risk
+
+
+plt.scatter(indexes_list[1:M], risk_list[1:M], s=0.05, facecolors='b', edgecolors='b')
 
 plt.show()
-
-# main_rect.plot('black')
-# q_rect.plot('black')
-# h_rect.plot('r')
-# for i in range(0, len(S), 1):
-#     color = 'g' if Y[i] == 1 else 'r'
-#     plt.scatter(S[i, 0], S[i, 1], s=5, facecolors=color, edgecolors=color)
-# plt.show()
