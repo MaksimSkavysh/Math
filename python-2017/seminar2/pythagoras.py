@@ -14,6 +14,4 @@ def get_pythagoras_triples(n):
         z_elements.extend(get_triples_for_element(z))
     return z_elements
 
-
-get_triples_for_element(5)
 print get_pythagoras_triples(10)
