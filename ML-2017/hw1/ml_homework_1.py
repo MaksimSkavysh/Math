@@ -58,9 +58,13 @@ M = 10000
 main_rect = Rect(0, 0, 1, 1)
 main_rect.calculate_square()
 
-q_side = 0.5 ** 0.5
+# q_side = 0.5 ** 0.5
+# q_rect = Rect(0, 0, q_side, q_side)
+# q_rect.square = 0.5
+
+q_side = 1/10
 q_rect = Rect(0, 0, q_side, q_side)
-q_rect.square = 0.5
+q_rect.square = q_side*q_side
 
 h_rect = Rect()
 risk_list = [1.0]*M
@@ -104,4 +108,4 @@ for m in range(1, M + 1, 1):
 
 plt.scatter(indexes_list[1:M], risk_list[1:M], s=0.05, facecolors='b', edgecolors='b')
 
-plt.show()
+# plt.show()
