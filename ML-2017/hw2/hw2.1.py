@@ -110,3 +110,36 @@ plt.scatter(x, y, s=0.05, facecolors='g', edgecolors='g')
 plt.show()
 
 
+
+def generate_points(b_min, b_divide, w, rect):
+    # x_lower = get_x(rect.min_y, b_divide, w[0], w[1])
+    # x_upper = get_x(rect.max_y, b_divide, w[0], w[1])
+    # if x_lower < x_upper:
+    #     x_min = max(x_lower, rect.min_x)
+    #     x_max = min(x_upper, rect.max_x)
+    # else:
+    #     x_min = max(x_upper, rect.min_x)
+    #     # x_max = min(x_lower, rect.max_x)
+    #     x_max = rect.max_x if rect.max_x > x_lower else x_lower
+    # plt.scatter([x_min, x_max], [0, 0], s=155.5, facecolors='g', edgecolors='g')
+    # x_array = np.random.uniform(x_min, x_max, N)
+
+    b_array = np.random.uniform(b_min, b_divide, N)
+    y_array = [0.0]*N
+    x_array = [0.0]*N
+    for i in range(0, N, 1):
+        x_lower = get_x(rect.min_y, b_divide, w[0], w[1])
+        x_upper = get_x(rect.max_y, b_divide, w[0], w[1])
+        if x_lower < x_upper:
+            x_min = max(x_lower, rect.min_x)
+            x_max = min(x_upper, rect.max_x)
+        else:
+            x_min = max(x_upper, rect.min_x)
+            # x_max = min(x_lower, rect.max_x)
+            x_max = rect.max_x if rect.max_x > x_lower else x_lower
+        x_element = np.random.random()*(x_max - x_min)
+
+        y_array[i] = x_element
+        y_array[i] = get_y(x_element, b_array[i], w[0], w[1])
+
+    plt.scatter(x_array, y_array, s=0.5, facecolors='g', edgecolors='g')

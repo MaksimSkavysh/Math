@@ -66,20 +66,6 @@ def find_value_extr(params, rect):
     return min(corners_value), max(corners_value)
 
 
-# def generate(params, rect, P):
-#     (w1, w2, b) = params
-#
-#     x_bounds = get_x_bounds((w1, w2, b_divide), rect)
-#
-#     x_P = np.random.uniform(x_bounds[0], x_bounds[1], P)
-#     y_P = [0.0] * P
-#     for i in range(0, P, 1):
-#         y_P[i] = get_y(x_P[i], b, w1, w2)
-#         y_P[i] = rect.max_y - np.random.random() * (rect.max_y - y_P[i])
-#     plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
-#     return x_P, y_P
-
-
 N = 10000
 P = 5000
 
@@ -108,19 +94,17 @@ b_divide = (b2 - b1) / 2
 # values_N = np.random.uniform(f_min, 0, N)
 x_bounds = get_x_bounds((w1, w2, b_divide), rect)
 
-x_N = np.random.uniform(x_bounds[0], x_bounds[1], N)
-y_N = [0.0] * N
-for i in range(0, N, 1):
-    y_N[i] = get_y(x_N[i], b_divide, w1, w2)
-    y_N[i] = np.random.random()*(y_N[i] - rect.min_y)
-plt.scatter(x_N, y_N, s=0.05, facecolors='b', edgecolors='b')
+x_N = np.random.uniform(rect.min_x, rect.max_x, P)
+y_N = np.random.uniform(rect.min_y, rect.max_y, P)
+
+for i in range(0,N):
+    value = get_value((w1, w2, b_divide), rect.min_x, rect.min_y)
+    if value < 0:
+        x = get_x(y_N[i], b_divide, w1, w2)
+        y = get_y(x_N[i], b_divide, w1, w2)
 
 
-x_P = np.random.uniform(x_bounds[0], x_bounds[1], P)
-y_P = [0.0] * P
-for i in range(0, P, 1):
-    y_P[i] = get_y(x_P[i], b_divide, w1, w2)
-    y_P[i] = rect.max_y - np.random.random()*(rect.max_y - y_P[i])
-plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
+plt.scatter(x_N, y_N, s=0.5, facecolors='g', edgecolors='g')
 
-# plt.show()
+
+plt.show()
