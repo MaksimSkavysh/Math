@@ -33,9 +33,9 @@ R = (max_x - min_x) / 2
 R_y = (max_y - min_y) / 2
 
 center = (min_x + (max_x - min_x) / 2, min_y + (max_y - min_y) / 2)
-angle = -45
-rad_min = angle / math.pi
-rad_max = angle / math.pi + math.pi
+angle = np.random.random()*math.pi
+rad_min = angle
+rad_max = angle + math.pi
 
 radius = np.random.uniform(0, R, N)
 radius_y = np.random.uniform(0, R_y, N)

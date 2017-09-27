@@ -90,8 +90,8 @@ def find_value_extr(params, rect):
 #     return x_P, y_P
 
 
-N = 1000
-P = 500
+N = 10000
+P = 5000
 
 w = [-2, 1]
 w1, w2 = w
