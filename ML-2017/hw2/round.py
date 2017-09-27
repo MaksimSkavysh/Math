@@ -3,12 +3,8 @@ import matplotlib.pyplot as plt
 import math
 
 
-def generate(N, P):
-
-    min_x = 0.0
-    max_x = 1.0
-    min_y = 0.0
-    max_y = 4.0
+def generate(N, P, bounds):
+    min_x, max_x, min_y, max_y = bounds
 
     R = (max_x - min_x) / 2
     R_y = (max_y - min_y) / 2
@@ -18,7 +14,7 @@ def generate(N, P):
     rad_min = angle
     rad_max = angle + math.pi
 
-    radius = np.random.uniform(0, R, N)
+    radius = np.random.uniform(R, 0, N)
     radius_y = np.random.uniform(0, R_y, N)
     radians = np.random.uniform(rad_min, rad_max, N)
 
