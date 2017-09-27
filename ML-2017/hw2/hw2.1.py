@@ -76,65 +76,52 @@ def find_value_extr(params, rect):
     return min(corners_value), max(corners_value)
 
 
-# def generate(params, rect, P):
-#     (w1, w2, b) = params
-#
-#     x_bounds = get_x_bounds((w1, w2, b_divide), rect)
-#
-#     x_P = np.random.uniform(x_bounds[0], x_bounds[1], P)
-#     y_P = [0.0] * P
-#     for i in range(0, P, 1):
-#         y_P[i] = get_y(x_P[i], b, w1, w2)
-#         y_P[i] = rect.max_y - np.random.random() * (rect.max_y - y_P[i])
-#     plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
-#     return x_P, y_P
+def generate(N, P, w):
 
+    w1, w2 = w
+
+    min_x = 0.0
+    max_x = 1.0
+    min_y = 0.0
+    max_y = 1.0
+
+    rect = Rect(min_x, max_x, min_y, max_y)
+    rect.plot()
+
+    b1 = -(w1 * min_x + w2 * min_y)
+    b2 = -(w1 * max_x + w2 * max_y)
+    b3 = -(w1 * max_x + w2 * min_y)
+    b4 = -(w1 * min_x + w2 * max_y)
+    # b_divide = np.random.random()*(b2 - b1)
+    b_divide = (b2 - b1) / 2
+
+    # f_min, f_max = find_value_extr((w1, w2, b_divide), rect)
+    # values_N = np.random.uniform(f_min, 0, N)
+    right_bounds, left_bounds = get_x_bounds((w1, w2, b_divide), rect)
+
+    # default = rect.max_y if w1*w2 < 0 else rect.min_y
+    default = rect.max_y
+    x_N = np.random.uniform(right_bounds[0], right_bounds[1], N)
+    y_N = [0.0] * N
+    for i in range(0, N, 1):
+        y_N[i] = get_y(x_N[i], b_divide, w1, w2, rect, default)
+        y_N[i] = rect.min_y + np.random.random() * (y_N[i] - rect.min_y)
+    plt.scatter(x_N, y_N, s=0.05, facecolors='b', edgecolors='b')
+
+    # default = rect.max_y if w1*w2 > 0 else rect.min_y
+    default = rect.min_y
+    x_P = np.random.uniform(left_bounds[0], left_bounds[1], P)
+    y_P = [0.0] * P
+    for i in range(0, P, 1):
+        y_P[i] = get_y(x_P[i], b_divide, w1, w2, rect, default)
+        y_P[i] = rect.max_y - np.random.random() * (rect.max_y - y_P[i])
+    plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
+
+    plt.show()
 
 N = 10000
 P = 5000
-
 w = [-2, 1]
-w1, w2 = w
 
-min_x = 0.0
-max_x = 1.0
-min_y = 0.0
-max_y = 1.0
+generate(N, P, w)
 
-rect = Rect(min_x, max_x, min_y, max_y)
-rect.plot()
-
-b1 = -(w1 * min_x + w2 * min_y)
-b2 = -(w1 * max_x + w2 * max_y)
-b3 = -(w1 * max_x + w2 * min_y)
-b4 = -(w1 * min_x + w2 * max_y)
-b_min = min(b1, b2, b3, b4)
-b_max = max(b1, b2, b3, b4)
-# b_divide = np.random.random()*(b2 - b1)
-b_divide = (b2 - b1) / 2
-
-
-# f_min, f_max = find_value_extr((w1, w2, b_divide), rect)
-# values_N = np.random.uniform(f_min, 0, N)
-right_bounds, left_bounds = get_x_bounds((w1, w2, b_divide), rect)
-
-# default = rect.max_y if w1*w2 < 0 else rect.min_y
-default = rect.max_y
-x_N = np.random.uniform(right_bounds[0], right_bounds[1], N)
-y_N = [0.0] * N
-for i in range(0, N, 1):
-    y_N[i] = get_y(x_N[i], b_divide, w1, w2, rect, default)
-    y_N[i] = rect.min_y + np.random.random()*(y_N[i] - rect.min_y)
-plt.scatter(x_N, y_N, s=0.05, facecolors='b', edgecolors='b')
-
-
-# default = rect.max_y if w1*w2 > 0 else rect.min_y
-default = rect.min_y
-x_P = np.random.uniform(left_bounds[0], left_bounds[1], P)
-y_P = [0.0] * P
-for i in range(0, P, 1):
-    y_P[i] = get_y(x_P[i], b_divide, w1, w2, rect, default)
-    y_P[i] = rect.max_y - np.random.random()*(rect.max_y - y_P[i])
-plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
-
-plt.show()
