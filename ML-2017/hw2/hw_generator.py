@@ -76,14 +76,11 @@ def find_value_extr(params, rect):
     return min(corners_value), max(corners_value)
 
 
-def generate(N, P, w):
+def generate(N, P, w, bounds):
 
     w1, w2 = w
 
-    min_x = 0.0
-    max_x = 1.0
-    min_y = 0.0
-    max_y = 1.0
+    min_x, max_x, min_y, max_y = bounds
 
     rect = Rect(min_x, max_x, min_y, max_y)
     rect.plot()
@@ -115,13 +112,14 @@ def generate(N, P, w):
     for i in range(0, P, 1):
         y_P[i] = get_y(x_P[i], b_divide, w1, w2, rect, default)
         y_P[i] = rect.max_y - np.random.random() * (rect.max_y - y_P[i])
-    plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
-
-    plt.show()
+    # plt.scatter(x_P, y_P, s=0.05, facecolors='r', edgecolors='r')
+    #
+    # plt.show()
+    return x_N, y_N, x_P, y_P
 
 N = 10000
 P = 5000
 w = [-2, 1]
 
-generate(N, P, w)
+# x_N, y_N, x_P, y_P = generate(N, P, w)
 

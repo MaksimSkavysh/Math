@@ -3,6 +3,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import round
+import hw_generator
 
 
 def plot(samples, labels):
@@ -29,13 +30,16 @@ def multiply(a, b):
 def perceptron(samples, labels):
     w = (0, 0)
     steps = 0
+    errors = 1
     length = len(samples)
-    for i in range(0, length, 1):
-        val = multiply(w, samples[i])
-        # if np.sign(val) != labels[i]:
-        if val <= 0:
-            w = np.add(w, np.multiply(samples[i], labels[i]))
-            steps += 1
+    while errors:
+        for i in range(0, length, 1):
+            val = multiply(w, samples[i])
+            if np.sign(val) != labels[i]:
+                w = np.add(w, np.multiply(samples[i], labels[i]))
+                steps += 1
+        errors = calcualate_error(w, samples, labels)
+        print(errors)
     return w, steps
 
 
@@ -57,8 +61,10 @@ max_x = 1.0
 min_y = -1.0
 max_y = 1.0
 bounds = (min_x, max_x, min_y, max_y)
+w = [-2, 1]
 
 x_N, y_N, x_P, y_P = round.generate(N, P, bounds)
+# x_N, y_N, x_P, y_P = hw_generator.generate(N, P, w, bounds)
 
 samples = list(zip(x_N + x_P, y_N + y_P))
 labels = [-1.0]*N + [1.0]*P

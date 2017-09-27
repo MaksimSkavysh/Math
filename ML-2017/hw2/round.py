@@ -7,6 +7,7 @@ def generate(N, P, bounds):
     min_x, max_x, min_y, max_y = bounds
 
     R = (max_x - min_x) / 2
+    R_min = 0.0
     R_y = (max_y - min_y) / 2
 
     center = (min_x + (max_x - min_x) / 2, min_y + (max_y - min_y) / 2)
@@ -14,8 +15,8 @@ def generate(N, P, bounds):
     rad_min = angle
     rad_max = angle + math.pi
 
-    radius = np.random.uniform(R, 0, N)
-    radius_y = np.random.uniform(0, R_y, N)
+    radius = np.random.uniform(R_min, R, N)
+    # radius_y = np.random.uniform(0, R_y, N)
     radians = np.random.uniform(rad_min, rad_max, N)
 
     x_N = [0.0] * N
@@ -25,7 +26,7 @@ def generate(N, P, bounds):
         y_N[i] = radius[i] * math.sin(radians[i])
     plt.scatter(x_N, y_N, s=0.05, facecolors='r', edgecolors='r')
 
-    radius = np.random.uniform(0, R, P)
+    radius = np.random.uniform(R_min, R, P)
     radius_y = np.random.uniform(0, R_y, P)
     radians = np.random.uniform(rad_max, rad_max + math.pi, P)
 
