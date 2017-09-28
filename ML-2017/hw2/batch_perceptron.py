@@ -39,7 +39,7 @@ def perceptron(samples, labels):
                 w = np.add(w, np.multiply(samples[i], labels[i]))
                 errors = errors + 1
                 steps += 1
-        print(errors)
+        # print(errors)
     return w, steps
 
 
@@ -53,11 +53,7 @@ def calcualate_error(w, samples, labels):
     return errors
 
 
-def run(N, P, bounds):
-    R_min = 1 / 50  # need for r_min in radius bounds
-    angle_min = 0.05
-    x_N, y_N, x_P, y_P = round.generate(N, P, bounds, R_min, angle_min)
-
+def run(N, P, bounds, x_N, y_N, x_P, y_P):
     samples = list(zip(x_N + x_P, y_N + y_P, [1.0] * (N + P)))
     labels = [-1.0] * N + [1.0] * P
 
@@ -71,22 +67,41 @@ def run(N, P, bounds):
 
     return steps, errors
 
-N = 1000
-P = 1000
-
 min_x = 0.0
 max_x = 10.0
 min_y = 0.0
 max_y = 10.0
 bounds = (min_x, max_x, min_y, max_y)
 
-steps, errors = run(N, P, bounds)
+k_start = 20
+k_end = 2000
+k_step = 10
+k_range = range(k_start, k_end, k_step)
+k_times = 20
 
-print('steps: ', steps)
-print('error: ', errors)
+R_min = 1 / 50  # need for r_min in radius bounds
+angle_min = 0.1
 
+set = [round.generate(k_end, k_end, bounds, R_min, angle_min) for i in range(0, k_times)]
+# x_N, y_N, x_P, y_P = round.generate(k_end, k_end, bounds, R_min, angle_min)
+
+steps = []
+
+for k in k_range:
+    times = k_times
+    step = 0
+    for i in range(0, k_times):
+        x_N, y_N, x_P, y_P = set[i]
+        cur_step, error = run(k, k + 1, bounds, x_N[0:k], y_N[0:k], x_P[0:k], y_P[0:k])
+        step = step + cur_step
+    step = step / k_times
+    steps.append(step)
+    print('k=', k, ' - steps: ', step)
+
+plt.scatter(k_range, steps, s=10, facecolors='b', edgecolors='b')
+# plt.plot()
 
 # plot(samples, labels)
 # print(samples[0])
 # print(samples[0][0], samples[0][1])
-# plt.show()
+plt.show()

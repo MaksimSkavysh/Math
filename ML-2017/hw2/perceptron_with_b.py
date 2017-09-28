@@ -53,8 +53,8 @@ def calcualate_error(w, samples, labels):
     return errors
 
 
-N = 100
-P = 100
+N = 1000
+P = 1000
 
 min_x = 0.0
 max_x = 10.0
@@ -63,7 +63,7 @@ max_y = 10.0
 bounds = (min_x, max_x, min_y, max_y)
 w = [-2, 1]
 
-x_N, y_N, x_P, y_P = round.generate(N, P, bounds)
+x_N, y_N, x_P, y_P = round.generate(N, P, bounds, 0.03)
 # x_N, y_N, x_P, y_P = hw_generator.generate(N, P, w, bounds)
 samples = list(zip(x_N + x_P, y_N + y_P, [1.0]*(N + P)))
 labels = [-1.0]*N + [1.0]*P
@@ -72,6 +72,7 @@ labels = np.array(labels)
 samples, labels = shuffle_samples_and_labels(samples, labels)
 
 plot(samples, labels)
+exit()
 # print(samples[0])
 # print(samples[0][0], samples[0][1])
 
