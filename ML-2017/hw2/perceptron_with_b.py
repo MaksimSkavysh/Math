@@ -13,6 +13,7 @@ def plot(samples, labels):
         plt.scatter(samples[i][0], samples[i][1], s=0.05, facecolors=c, edgecolors=c)
         # print('\rpl: %.2f' % (100 * i/length), end='')
         # sys.stdout.write("\033[F")
+    plt.show()
 
 
 def shuffle_samples_and_labels(samples, labels):
@@ -32,14 +33,13 @@ def perceptron(samples, labels):
     errors = 1
     length = len(samples)
     while errors:
-        errors = 0
         for i in range(0, length, 1):
             val = multiply(w, samples[i])
             if np.sign(val) != labels[i]:
                 w = np.add(w, np.multiply(samples[i], labels[i]))
-                errors = errors + 1
                 steps += 1
-        print(errors)
+        errors = calcualate_error(w, samples, labels)
+        # print(errors)
     return w, steps
 
 
@@ -53,40 +53,28 @@ def calcualate_error(w, samples, labels):
     return errors
 
 
-def run(N, P, bounds):
-    R_min = 1 / 50  # need for r_min in radius bounds
-    angle_min = 0.05
-    x_N, y_N, x_P, y_P = round.generate(N, P, bounds, R_min, angle_min)
-
-    samples = list(zip(x_N + x_P, y_N + y_P, [1.0] * (N + P)))
-    labels = [-1.0] * N + [1.0] * P
-
-    samples = np.array(samples)
-    labels = np.array(labels)
-
-    samples, labels = shuffle_samples_and_labels(samples, labels)
-
-    w, steps = perceptron(samples, labels)
-    errors = calcualate_error(w, samples, labels)
-
-    return steps, errors
-
-N = 1000
-P = 1000
+N = 100
+P = 100
 
 min_x = 0.0
 max_x = 10.0
 min_y = 0.0
 max_y = 10.0
 bounds = (min_x, max_x, min_y, max_y)
+w = [-2, 1]
 
-steps, errors = run(N, P, bounds)
+x_N, y_N, x_P, y_P = round.generate(N, P, bounds)
+# x_N, y_N, x_P, y_P = hw_generator.generate(N, P, w, bounds)
+samples = list(zip(x_N + x_P, y_N + y_P, [1.0]*(N + P)))
+labels = [-1.0]*N + [1.0]*P
+samples = np.array(samples)
+labels = np.array(labels)
+samples, labels = shuffle_samples_and_labels(samples, labels)
 
-print('steps: ', steps)
-print('error: ', errors)
-
-
-# plot(samples, labels)
+plot(samples, labels)
 # print(samples[0])
 # print(samples[0][0], samples[0][1])
-# plt.show()
+
+w, steps = perceptron(samples, labels)
+print('steps: ', steps)
+print('errors: ', calcualate_error(w, samples, labels))
