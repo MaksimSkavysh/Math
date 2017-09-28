@@ -48,7 +48,7 @@ def calcualate_error(w, samples, labels):
     length = len(samples)
     for i in range(0, length, 1):
         val = multiply(w, samples[i])
-        if np.sign(val) != labels[i] and np.sign(val) != 0:
+        if np.sign(val) != labels[i]:
             errors = errors + 1
     return errors
 
