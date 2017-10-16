@@ -1,0 +1,14 @@
+./data/ovary_1169-08_n_0001.tif 1
+./data/ovary_1169-08_n_0002.tif 1
+./data/ovary_1169-08_n_0003.tif 1
+./data/ovary_1169-08_n_0004.tif 1
+./data/ovary_1169-08_n_0005.tif 1
+./data/ovary_1169-08_n_0006.tif 1
+./data/ovary_1169-08_n_0007.tif 1
+./data/ovary_1169-08_n_0008.tif 1
+./data/ovary_1224-08_t_0162.tif 0
+./data/ovary_1224-08_t_0163.tif 0
+./data/ovary_1224-08_t_0164.tif 0
+./data/ovary_1224-08_t_0165.tif 0
+./data/ovary_1224-08_t_0166.tif 0
+./data/ovary_1224-08_t_0167.tif 0
