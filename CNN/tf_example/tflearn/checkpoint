@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/isoft/Documents/educational/Math/CNN/tf_example/tflearn/my_model.tflearn"
+all_model_checkpoint_paths: "/Users/isoft/Documents/educational/Math/CNN/tf_example/tflearn/my_model.tflearn"
